@@ -1,33 +1,48 @@
 #pragma once
 
 #include <string>
+#include <memory>
 
-#define LOG_ERROR(msg) LogMessage(eLogLevelError, msg)
-#define LOG_WARNING(msg) LogMessage(eLogLevelWarning, msg)
-#define LOG_INFO(msg) LogMessage(eLogLevelInfo, msg)
+#define LOG_ERROR(msg) Logger::LogMessage(eLogLevelError, __FILE__, __FUNCTION__, __LINE__, msg)
+#define LOG_WARNING(msg) Logger::LogMessage(eLogLevelWarning, __FILE__, __FUNCTION__, __LINE__, msg)
+#define LOG_INFO(msg) Logger::LogMessage(eLogLevelInfo, __FILE__, __FUNCTION__, __LINE__, msg)
 
 namespace Logger
 {
 
 enum ELogLevel
 {
-	eLogLevelError = 0,
-	eLogLevelWarning = 1,
-	eLogLevelInfo = 2
+    eLogLevelError = 0,
+    eLogLevelWarning = 1,
+    eLogLevelInfo = 2
 };
-//////////////////////////////////////////////////////////////////////////////
-class Logger
+
+void LogMessage(
+    ELogLevel logLevel,
+    const char *file,
+    const char *function,
+    int line,
+    const std::string &message );
+
+class ILogger
+{
+
+};
+
+class LoggerConfig
 {
 public:
-	static void LogMessage( ELogLevel logLevel, const std::string &message );
+    // Supports RAII, should be called once
+    explicit LoggerConfig( const std::string &logPath );
 
 private:
-	// The only allowed constructor
-	Logger( const std::string &logPath );
-	// Disabled
-	Logger();
-	Logger(const Logger&);
-	Logger(Logger&&);
+    std::unique_ptr<ILogger> loggerInstance;
+
+    // Disallowed
+    LoggerConfig();
+    LoggerConfig(const LoggerConfig&);
+    LoggerConfig(LoggerConfig&&);
+    void operator=(const LoggerConfig&);
 };
-//////////////////////////////////////////////////////////////////////////////
+
 } // namespace Logger
