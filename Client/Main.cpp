@@ -14,10 +14,7 @@ int main(int argc, const char *argv[])
         }
 
         Client::Client client(argv[1], argv[2]);
-
-        //boost::asio::write(s, boost::asio::buffer(request, request_length));
-        //char reply[max_length];
-        //size_t reply_length = boost::asio::read(s, boost::asio::buffer(reply, request_length));
+        client.Start();
     }
     catch (std::exception& e)
     {

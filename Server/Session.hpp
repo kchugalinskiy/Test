@@ -5,7 +5,7 @@
 namespace Server
 {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class Session
+class Session : public std::enable_shared_from_this<Session>
 {
 public:
     Session(boost::asio::ip::tcp::socket socket);
@@ -13,7 +13,11 @@ public:
     void Start();
 
 private:
+    void ReadNextNumber();
+    void WriteResponse();
+
     boost::asio::ip::tcp::socket clientSocket;
+    int data;
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 } // namespace Server
