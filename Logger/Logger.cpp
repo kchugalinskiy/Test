@@ -1,9 +1,10 @@
 #include "Logger.hpp"
+
+#include <boost/format.hpp>
+#include <fstream>
 #include <mutex>
 #include <sstream>
 #include <Windows.h>
-#include <boost/chrono.hpp>
-#include <fstream>
 
 namespace Logger
 {
@@ -40,14 +41,12 @@ private:
 static std::string VSConsoleFormatter(
     ELogLevel logLevel,
     const char *file,
-    const char *,
+    const char *function,
     int line,
-    boost::chrono::system_clock::time_point &currentTime,
     const std::string &message )
 {
-    std::ostringstream resultMessage;
-    resultMessage << file << "(" << line << "): " << currentTime << " : " << message;
-    return std::forward<std::string>(resultMessage.str());
+    std::string resultMessage ((boost::format("%s(%i): in function \"%s\": %s\n") % file % line % function % message).str());
+    return std::move( resultMessage );
 }
 
 static std::string FileFormatter(
@@ -55,12 +54,10 @@ static std::string FileFormatter(
     const char *file,
     const char *,
     int line,
-    boost::chrono::system_clock::time_point &currentTime,
     const std::string &message )
 {
-    std::ostringstream resultMessage;
-    resultMessage << currentTime << file << ":" << line << " - " << message;
-    return std::forward<std::string>(resultMessage.str());
+    std::string resultMessage ((boost::format("%s:%i : %s\n") % file % line % message).str());
+    return std::move(resultMessage);
 }
 //////////////////////////////////////////////////////////////////////////////
 FileLogger::FileLogger( const std::string &logPath )
@@ -77,7 +74,7 @@ FileLogger::FileLogger( const std::string &logPath )
     }
 
     logFile.open( logPath );
-    if ( logFile.is_open() )
+    if ( !logFile.is_open() )
     {
         throw std::logic_error("File open error");
     }
@@ -106,8 +103,13 @@ FileLogger *FileLogger::GetInstance()
 
 void FileLogger::WriteToFile( const std::string &message )
 {
-
+    if ( logFile.is_open() && logFile.good() )
+    {
+        logFile << message;
+    }
 }
+
+FileLogger *FileLogger::fileloggerInstance = nullptr;
 //////////////////////////////////////////////////////////////////////////////
 void LogMessage(
     ELogLevel logLevel,
@@ -116,22 +118,17 @@ void LogMessage(
     int line,
     const std::string &message )
 {
-    boost::chrono::system_clock::time_point currentTime
-        = boost::chrono::system_clock::now();
-
     const std::string &consoleMessage
         = VSConsoleFormatter( logLevel,
                               file,
                               function,
                               line,
-                              currentTime,
                               message);
     const std::string &fileMessage
         = FileFormatter( logLevel,
                          file,
                          function,
                          line,
-                         currentTime,
                          message);
 
     std::lock_guard<std::mutex> loggerLock( loggerMutex );

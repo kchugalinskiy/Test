@@ -39,3 +39,5 @@ ipch
 
 # ignore binaries
 garbage
+server.txt
+client.txt
