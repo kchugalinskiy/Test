@@ -106,6 +106,7 @@ void FileLogger::WriteToFile( const std::string &message )
     if ( logFile.is_open() && logFile.good() )
     {
         logFile << message;
+        logFile.flush();
     }
 }
 
