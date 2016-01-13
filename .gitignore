@@ -32,6 +32,7 @@
 *.opensdf
 *.vcxproj.user
 *.suo
+ipch
 
 # ignore boost, too heavy to store it in repo
 3rdParty/boost
