@@ -31,3 +31,10 @@
 *.sdf
 *.opensdf
 *.vcxproj.user
+*.suo
+
+# ignore boost, too heavy to store it in repo
+3rdParty/boost_1_60_0
+
+# ignore binaries
+!garbage
