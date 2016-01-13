@@ -1,0 +1,20 @@
+#pragma once
+
+#include <boost/asio.hpp>
+
+namespace Client
+{
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Client
+{
+public:
+    Client( const std::string &host, const std::string &port );
+
+private:
+    boost::asio::io_service ioService;
+    boost::asio::ip::tcp::socket serverSocket;
+    boost::asio::ip::tcp::resolver resolver;
+    //boost::asio::connect(s, resolver.resolve({argv[1], argv[2]}));
+};
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+} // namespace Client
