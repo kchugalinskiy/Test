@@ -34,7 +34,7 @@
 *.suo
 
 # ignore boost, too heavy to store it in repo
-3rdParty/boost_1_60_0
+3rdParty/boost
 
 # ignore binaries
 !garbage
