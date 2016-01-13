@@ -24,12 +24,18 @@
     <ClCompile Include="Session.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RequestProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Server.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Session.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RequestProcessor.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

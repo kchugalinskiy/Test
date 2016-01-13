@@ -82,6 +82,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="RequestProcessor.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="Session.cpp" />
   </ItemGroup>
@@ -91,6 +92,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="RequestProcessor.hpp" />
     <ClInclude Include="Server.hpp" />
     <ClInclude Include="Session.hpp" />
   </ItemGroup>
