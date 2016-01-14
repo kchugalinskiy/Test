@@ -26,7 +26,7 @@ void RequestProcessor::AddNewNumber(int number)
 {
     serializator.QueueSave(number);
     static const int maximumAcceptedValue = 1023;
-    if (number < 0 || number >= maximumValue)
+    if (number < 0 || number >= maximumAcceptedValue)
     {
         LOG_ERROR("Wrong number (ignored) : " + std::to_string(number));
         return;

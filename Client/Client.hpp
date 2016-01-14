@@ -1,6 +1,7 @@
 #pragma once
 
 #include <boost/asio.hpp>
+#include <chrono>
 
 namespace Client
 {
@@ -9,7 +10,7 @@ class Client
 {
 public:
     // RAII
-    Client( const std::string &host, short port );
+    Client(const std::string &host, short port, int uptimeMs);
     ~Client();
 
     void Start();
@@ -29,6 +30,7 @@ private:
     boost::asio::ip::tcp::resolver resolver;
     boost::asio::ip::address address;
     short port;
+    std::chrono::milliseconds uptimeMs;
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 } // namespace Client

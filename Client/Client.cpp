@@ -2,15 +2,17 @@
 
 #include "Logger/Logger.hpp"
 #include <boost/lexical_cast.hpp>
+#include <random>
 
 namespace Client
 {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Client::Client(const std::string &hostString, short serverPort)
+Client::Client(const std::string &hostString, short serverPort, int uptime)
     : serverSocket(ioService)
     , resolver(ioService)
     , address(boost::asio::ip::address::from_string(hostString))
     , port(serverPort)
+    , uptimeMs(std::chrono::milliseconds(uptime))
 {
     LOG_INFO("Client started");
 }
@@ -29,12 +31,20 @@ void Client::Start()
     boost::asio::connect( serverSocket, resolver.resolve(boost::asio::ip::tcp::endpoint(address, port)) );
     LOG_INFO("Service started");
 
-    for ( int i = 0 ; i != 1024 ; ++i )
+    std::random_device randomDevice;
+    std::mt19937 generator(randomDevice());
+    std::uniform_int_distribution<> distribution(0, 1023);
+    std::chrono::system_clock::time_point clientStart = std::chrono::high_resolution_clock::now();
+
+    std::chrono::milliseconds currentProgramUptimeMs;
+    do
     {
-        SendNumber( i );
+        std::chrono::system_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
+        currentProgramUptimeMs = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - clientStart);
+        SendNumber( distribution(generator) );
         double result = ReceiveSum();
         LOG_INFO(std::string("Got response from server:") + std::to_string(result));
-    }
+    } while (uptimeMs >= currentProgramUptimeMs);
 }
 
 void Client::SendNumber( int request )
