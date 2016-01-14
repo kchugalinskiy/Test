@@ -11,17 +11,21 @@ class RequestProcessor
 {
 public:
     RequestProcessor();
-    // Add new number and return current sum
-    int AddNewNumber( int number );
+    // Process number somehow
+	double ProcessInputNumber(int number);
 
 private:
+	// Not thread-safe, returns sum
+	void AddNewNumber(int number);
+	double CalculateSquareAvg() const;
+
     // Disallowed
     RequestProcessor(RequestProcessor&&);
     RequestProcessor(const RequestProcessor&);
     void operator=(const RequestProcessor&);
 
     std::mutex requestProcessorMutex;
-	uint64_t partialSum;
+	uint64_t partialSqrSum;
 	int numberOfElements;
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -22,6 +22,11 @@ void Server::Run()
     ioService.run();
 }
 
+Server::~Server()
+{
+
+}
+
 void Server::AcceptIncoming(  )
 {
     acceptor.async_accept(incomingConnectionSocket,
@@ -30,7 +35,7 @@ void Server::AcceptIncoming(  )
             if (!errorCode)
             {
                 LOG_INFO("Starting new client session");
-                std::make_shared<Session>(std::move(incomingConnectionSocket))->Start();
+				std::make_shared<Session>(std::move(incomingConnectionSocket))->Start(&requestProcessor);
             }
 
             AcceptIncoming();

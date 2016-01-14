@@ -25,7 +25,7 @@ void Client::Start()
         checkResult += i*i;
         SendNumber( i );
         int result = ReceiveSum();
-        if ( result != checkResult / (i + 1) )
+        if ( result != sqrt(checkResult / (i + 1)) )
         {
 			LOG_ERROR(std::string("WRONG RESULT! Expected") + std::to_string(checkResult) + " actual value is " + std::to_string(result));
         }
