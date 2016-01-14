@@ -86,6 +86,7 @@
     <ClCompile Include="RequestProcessor.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="Session.cpp" />
+    <ClCompile Include="SqrAverageContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Logger\Logger.vcxproj">
@@ -97,6 +98,7 @@
     <ClInclude Include="RequestProcessor.hpp" />
     <ClInclude Include="Server.hpp" />
     <ClInclude Include="Session.hpp" />
+    <ClInclude Include="SqrAverageContainer.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

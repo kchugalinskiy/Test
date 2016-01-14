@@ -18,7 +18,6 @@ public:
 private:
     // Not thread-safe, returns sum
     void AddNewNumber(int number);
-    double CalculateSquareAvg() const;
 
     // Disallowed
     RequestProcessor() = delete;
@@ -27,10 +26,6 @@ private:
     void operator=(const RequestProcessor&) = delete;
 
     std::mutex requestProcessorMutex;
-    // I cache all square sum. For our task uint64_t is enough. This algo will need some improvements for bigger numbers or
-    // if too much uptime will be required.
-    uint64_t partialSqrSum;
-    int numberOfElements;
     DataSaver serializator;
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

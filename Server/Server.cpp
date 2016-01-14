@@ -44,6 +44,7 @@ void Server::AcceptIncoming(  )
                 LOG_INFO("Starting new client session");
                 std::thread sessionThread([this](RequestProcessor *processor)
                     {
+                        // It's safe to move boost socket because it has a very special move ctor overload
                         std::shared_ptr<Session> session = std::make_shared<Session>(std::move(incomingConnectionSocket));
                         session->Start(processor);
                     }, &requestProcessor);
