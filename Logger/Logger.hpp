@@ -3,8 +3,12 @@
 #include <string>
 #include <memory>
 
+#ifdef _DEBUG
 #define LOG_ERROR(msg) Logger::LogMessage(Logger::eLogLevelError, __FILE__, __FUNCTION__, __LINE__, msg); \
     __debugbreak()
+#else // _DEBUG
+#define LOG_ERROR(msg) Logger::LogMessage(Logger::eLogLevelError, __FILE__, __FUNCTION__, __LINE__, msg);
+#endif // _DEBUG
 #define LOG_WARNING(msg) Logger::LogMessage(Logger::eLogLevelWarning, __FILE__, __FUNCTION__, __LINE__, msg)
 #define LOG_INFO(msg) Logger::LogMessage(Logger::eLogLevelInfo, __FILE__, __FUNCTION__, __LINE__, msg)
 

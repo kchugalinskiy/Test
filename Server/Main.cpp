@@ -12,6 +12,7 @@ int main(int argc, const char *argv[])
     std::string serializationPath = "C:\\serverSerializeDefault.txt";
     int serializationDelay = 1000;
     std::string algorithm = "bucket";
+    std::string logPath = "C:\\server.txt";
 
     boost::program_options::options_description optionDesc("General options");
     optionDesc.add_options()
@@ -19,6 +20,7 @@ int main(int argc, const char *argv[])
         ("listen_port,l", boost::program_options::value<short>(&listenPort), "Select server listen port")
         ("serialization_path,p", boost::program_options::value<std::string>(&serializationPath), "Select server serialization path")
         ("serialization_delay,d", boost::program_options::value<int>(&serializationDelay), "Select server serialization delay")
+        ("log_path,c", boost::program_options::value<std::string>(&logPath), "Select log path")
         ("algorithm,a", boost::program_options::value<std::string>(&algorithm), "Select sqr avg algorithm : boost, bucket");
 
     boost::program_options::variables_map variablesMap;
@@ -26,7 +28,7 @@ int main(int argc, const char *argv[])
     boost::program_options::store(parsed, variablesMap);
     boost::program_options::notify(variablesMap);
 
-    Logger::LoggerConfig logConfig( "D:\\Test\\server.txt" );
+    Logger::LoggerConfig logConfig(logPath);
     LOG_INFO("Starting server...");
 
     try

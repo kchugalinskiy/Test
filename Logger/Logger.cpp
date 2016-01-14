@@ -1,6 +1,7 @@
 #include "Logger.hpp"
 
 #include <boost/format.hpp>
+#include <cstdio>
 #include <fstream>
 #include <mutex>
 #include <sstream>
@@ -145,7 +146,10 @@ void LogMessage(
                            "released or not acquired yet");
     }
 
+    printf("%s", consoleMessage.c_str());
+#ifdef _DEBUG
     OutputDebugStringA( consoleMessage.c_str() );
+#endif
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // LoggerConfig
