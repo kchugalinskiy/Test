@@ -12,12 +12,12 @@ class RequestProcessor
 public:
     RequestProcessor();
     // Process number somehow
-	double ProcessInputNumber(int number);
+    double ProcessInputNumber(int number);
 
 private:
-	// Not thread-safe, returns sum
-	void AddNewNumber(int number);
-	double CalculateSquareAvg() const;
+    // Not thread-safe, returns sum
+    void AddNewNumber(int number);
+    double CalculateSquareAvg() const;
 
     // Disallowed
     RequestProcessor(RequestProcessor&&);
@@ -25,8 +25,8 @@ private:
     void operator=(const RequestProcessor&);
 
     std::mutex requestProcessorMutex;
-	uint64_t partialSqrSum;
-	int numberOfElements;
+    uint64_t partialSqrSum;
+    int numberOfElements;
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 } // namespace Server

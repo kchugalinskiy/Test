@@ -27,7 +27,7 @@ void Client::Start()
         int result = ReceiveSum();
         if ( result != sqrt(checkResult / (i + 1)) )
         {
-			LOG_ERROR(std::string("WRONG RESULT! Expected") + std::to_string(checkResult) + " actual value is " + std::to_string(result));
+            LOG_ERROR(std::string("WRONG RESULT! Expected") + std::to_string(checkResult) + " actual value is " + std::to_string(result));
         }
     }
 }

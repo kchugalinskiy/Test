@@ -81,6 +81,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DataSaver.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="RequestProcessor.cpp" />
     <ClCompile Include="Server.cpp" />
@@ -92,6 +93,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DataSaver.hpp" />
     <ClInclude Include="RequestProcessor.hpp" />
     <ClInclude Include="Server.hpp" />
     <ClInclude Include="Session.hpp" />

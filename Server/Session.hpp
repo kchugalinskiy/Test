@@ -12,7 +12,7 @@ class Session : public std::enable_shared_from_this<Session>
 public:
     Session(boost::asio::ip::tcp::socket socket);
 
-	void Start( RequestProcessor *processor );
+    void Start( RequestProcessor *processor );
 
 private:
     void ReadNextNumber();
@@ -20,8 +20,8 @@ private:
 
     boost::asio::ip::tcp::socket clientSocket;
     int inputData;
-	double outputData;
-	RequestProcessor *requestProcessor;
+    double outputData;
+    RequestProcessor *requestProcessor;
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 } // namespace Server

@@ -24,7 +24,14 @@ void Server::Run()
 
 Server::~Server()
 {
-
+    for (auto &sessionThread : clientSessions)
+    {
+        if (sessionThread.joinable())
+        {
+            sessionThread.join();
+        }
+    }
+    clientSessions.erase(clientSessions.begin(), clientSessions.end());
 }
 
 void Server::AcceptIncoming(  )
@@ -35,7 +42,12 @@ void Server::AcceptIncoming(  )
             if (!errorCode)
             {
                 LOG_INFO("Starting new client session");
-				std::make_shared<Session>(std::move(incomingConnectionSocket))->Start(&requestProcessor);
+                std::thread sessionThread([this](RequestProcessor *processor)
+                    {
+                        Session session(std::move(incomingConnectionSocket));
+                        session.Start(processor);
+                    }, &requestProcessor);
+                clientSessions.emplace_back(std::move(sessionThread));
             }
 
             AcceptIncoming();
