@@ -9,7 +9,7 @@ int main(int argc, const char *argv[])
 
     try
     {
-        std::string host = "localhost";
+        std::string host = "127.0.0.1";
         short port = 12345;
         int clientUptime = 1000;
 

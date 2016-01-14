@@ -3,6 +3,7 @@
 #include "Logger/Logger.hpp"
 #include <boost/lexical_cast.hpp>
 #include <random>
+#include <iostream>
 
 namespace Client
 {
@@ -37,14 +38,17 @@ void Client::Start()
     std::chrono::system_clock::time_point clientStart = std::chrono::high_resolution_clock::now();
 
     std::chrono::milliseconds currentProgramUptimeMs;
+    int numberOfRequests = 0;
     do
     {
+        ++numberOfRequests;
         std::chrono::system_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
         currentProgramUptimeMs = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - clientStart);
         SendNumber( distribution(generator) );
         double result = ReceiveSum();
         LOG_INFO(std::string("Got response from server:") + std::to_string(result));
     } while (uptimeMs >= currentProgramUptimeMs);
+    LOG_INFO(std::string("Time is gone! Requests = ") + std::to_string(numberOfRequests));
 }
 
 void Client::SendNumber( int request )

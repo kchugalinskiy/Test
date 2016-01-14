@@ -42,7 +42,14 @@ void RequestProcessor::AddNewNumber(int number)
 
 double RequestProcessor::CalculateSquareAvg() const
 {
-    return sqrt(1.0 * partialSqrSum / numberOfElements);
+    // Maximum number of elements : 2^54 - 2^64
+    // Maximum square sum : 2^64
+    // (Maximum square sum) div (Maximum number of elements) : 0 - 2^10
+    // (Maximum square sum) mod (Maximum number of elements) : 0 - 2^64
+    double div = (double)(partialSqrSum / numberOfElements); // casted value is 1024 maximum - fine for double
+    double mod = (double)(partialSqrSum % numberOfElements) / numberOfElements; // casted value is 1023 maximum, fine for double
+    double divided = div + mod;
+    return sqrt(1.0 * divided);
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 } // namespace Server
