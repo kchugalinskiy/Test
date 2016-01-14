@@ -10,6 +10,7 @@ namespace Server
 DataSaver::DataSaver(const std::string &binaryFilePath, std::chrono::milliseconds delay)
     : serializerDelay(delay)
     , serializationPath(binaryFilePath)
+    , requestQueue(65535)
 {
     std::ofstream serializeFile(serializationPath);
     if (serializeFile.is_open())
@@ -66,6 +67,7 @@ void DataSaver::MigrateToBinaryTree()
     int number;
     while (requestQueue.pop(number))
     {
+        LOG_INFO(std::string("Processing number ") + std::to_string(number) + " from queue" );
         if (valueCount.end() == valueCount.find(number))
         {
             valueCount[number] = 0;

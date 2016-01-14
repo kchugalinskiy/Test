@@ -9,7 +9,7 @@ class Client
 {
 public:
     // RAII
-    Client( const std::string &host, const std::string &port );
+    Client( const std::string &host, short port );
     ~Client();
 
     void Start();

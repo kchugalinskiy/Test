@@ -6,11 +6,11 @@
 namespace Client
 {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Client::Client( const std::string &hostString, const std::string &portString )
+Client::Client(const std::string &hostString, short serverPort)
     : serverSocket(ioService)
     , resolver(ioService)
     , address(boost::asio::ip::address::from_string(hostString))
-    , port(boost::lexical_cast<short>( portString ))
+    , port(serverPort)
 {
     LOG_INFO("Client started");
 }

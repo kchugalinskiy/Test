@@ -41,3 +41,6 @@ ipch
 garbage
 server.txt
 client.txt
+
+# Others
+*.txt

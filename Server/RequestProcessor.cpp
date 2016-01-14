@@ -1,6 +1,7 @@
 #include "RequestProcessor.hpp"
 
 #include <cmath>
+#include <limits>
 
 namespace Server
 {
@@ -16,19 +17,27 @@ double RequestProcessor::ProcessInputNumber(int number)
 {
     std::unique_lock<std::mutex> processorLock(requestProcessorMutex);
     AddNewNumber(number);
-    return CalculateSquareAvg();
+    double result = CalculateSquareAvg();
+    LOG_INFO(std::string("Current result = ") + std::to_string(result));
+    return result;
 }
 
 void RequestProcessor::AddNewNumber(int number)
 {
-    if (number >= 1024)
+    serializator.QueueSave(number);
+    static const int maximumAcceptedValue = 1023;
+    if (number < 0 || number >= maximumValue)
     {
-        LOG_ERROR("Number overflow : " + std::to_string(number));
+        LOG_ERROR("Wrong number (ignored) : " + std::to_string(number));
         return;
     }
 
     ++numberOfElements;
     partialSqrSum += number * number;
+    if (std::numeric_limits<uint64_t>::max() < 2 * maximumAcceptedValue + partialSqrSum)
+    {
+        LOG_ERROR("Overflow is nearby! Change algorithm :-)");
+    }
 }
 
 double RequestProcessor::CalculateSquareAvg() const
