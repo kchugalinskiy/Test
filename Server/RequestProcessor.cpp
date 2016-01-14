@@ -15,7 +15,7 @@ int RequestProcessor::AddNewNumber( int number )
     std::unique_lock<std::mutex> processorLock(requestProcessorMutex);
     ++numberOfElements;
     partialSum += number * number;
-    return (partialSum / numberOfElements);
+    return (int)(partialSum / numberOfElements);
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 } // namespace Server
