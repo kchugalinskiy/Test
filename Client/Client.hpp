@@ -8,7 +8,9 @@ namespace Client
 class Client
 {
 public:
+    // RAII
     Client( const std::string &host, const std::string &port );
+    ~Client();
 
     void Start();
 
@@ -20,7 +22,7 @@ private:
     void operator=(const Client&);
 
     void SendNumber( int request );
-    int ReceiveSum();
+    double ReceiveSum();
 
     boost::asio::io_service ioService;
     boost::asio::ip::tcp::socket serverSocket;

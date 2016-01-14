@@ -15,20 +15,25 @@ Client::Client( const std::string &hostString, const std::string &portString )
     LOG_INFO("Client started");
 }
 
+Client::~Client()
+{
+    if (!ioService.stopped())
+    {
+        LOG_INFO("Service stopped");
+        ioService.stop();
+    }
+}
+
 void Client::Start()
 {
     boost::asio::connect( serverSocket, resolver.resolve(boost::asio::ip::tcp::endpoint(address, port)) );
+    LOG_INFO("Service started");
 
-    int checkResult = 0;
-    for ( int i = 0 ; i != 1023 ; ++i )
+    for ( int i = 0 ; i != 1024 ; ++i )
     {
-        checkResult += i*i;
         SendNumber( i );
-        int result = ReceiveSum();
-        if ( result != sqrt(checkResult / (i + 1)) )
-        {
-            LOG_ERROR(std::string("WRONG RESULT! Expected") + std::to_string(checkResult) + " actual value is " + std::to_string(result));
-        }
+        double result = ReceiveSum();
+        LOG_INFO(std::string("Got response from server:") + std::to_string(result));
     }
 }
 
@@ -37,9 +42,9 @@ void Client::SendNumber( int request )
     boost::asio::write( serverSocket, boost::asio::buffer(&request, sizeof(request)) );
 }
 
-int Client::ReceiveSum()
+double Client::ReceiveSum()
 {
-    int reply;
+    double reply;
     size_t reply_length = boost::asio::read( serverSocket, boost::asio::buffer(&reply, sizeof(reply)) );
     if ( sizeof(reply) != reply_length )
     {

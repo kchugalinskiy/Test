@@ -44,8 +44,8 @@ void Server::AcceptIncoming(  )
                 LOG_INFO("Starting new client session");
                 std::thread sessionThread([this](RequestProcessor *processor)
                     {
-                        Session session(std::move(incomingConnectionSocket));
-                        session.Start(processor);
+                        std::shared_ptr<Session> session = std::make_shared<Session>(std::move(incomingConnectionSocket));
+                        session->Start(processor);
                     }, &requestProcessor);
                 clientSessions.emplace_back(std::move(sessionThread));
             }

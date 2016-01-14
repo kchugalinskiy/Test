@@ -33,7 +33,7 @@ void RequestProcessor::AddNewNumber(int number)
 
 double RequestProcessor::CalculateSquareAvg() const
 {
-    return double(sqrt(partialSqrSum / numberOfElements));
+    return sqrt(1.0 * partialSqrSum / numberOfElements);
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 } // namespace Server
