@@ -1,27 +1,30 @@
 #include "Logger/Logger.hpp"
 #include "Server.hpp"
 #include <boost/lexical_cast.hpp>
+#include <boost/program_options.hpp>
 
 int main(int argc, const char *argv[])
 {
+    short listenPort;
+    std::string serializationPath;
+    int serializationDelay;
+
+    boost::program_options::options_description optionDesc("General options");
+    optionDesc.add_options()
+        ("help,h", "Show help")
+        ("listen_port,l", boost::program_options::value<short>(&listenPort), "Select server listen port")
+        ("serialization_path,p", boost::program_options::value<std::string>(&serializationPath), "Select server serialization path")
+        ("serialization_delay,d", boost::program_options::value<int>(&serializationDelay), "Select server serialization delay")
+        ;
+
     Logger::LoggerConfig logConfig( "D:\\Test\\server.txt" );
     LOG_INFO("Starting server...");
 
     try
     {
-        if (argc != 2)
-        {
-            throw std::logic_error("Missing or too many command line arguments! Expected usage server <listen port>");
-        }
-
-        short port = boost::lexical_cast<short>( std::string(argv[1]) );
-        Server::Server server(port);
+        std::chrono::milliseconds serializationDelayMs = std::chrono::milliseconds(serializationDelay);
+        Server::Server server(listenPort, serializationPath, serializationDelayMs);
         server.Run();
-    }
-    catch ( const boost::bad_lexical_cast &badInput )
-    {
-        LOG_ERROR( "Bad command line argument! Expected server <listen port>" );
-        LOG_ERROR( badInput.what() );
     }
     catch ( const std::exception& e )
     {

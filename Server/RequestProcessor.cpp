@@ -5,11 +5,11 @@
 namespace Server
 {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-RequestProcessor::RequestProcessor()
-: partialSqrSum(0)
+RequestProcessor::RequestProcessor(const std::string &binaryFilePath, std::chrono::milliseconds serializerDelay)
+    : partialSqrSum(0)
     , numberOfElements(0)
+    , serializator(binaryFilePath, serializerDelay)
 {
-
 }
 
 double RequestProcessor::ProcessInputNumber(int number)

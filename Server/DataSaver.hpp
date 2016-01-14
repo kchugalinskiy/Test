@@ -14,23 +14,32 @@ namespace Server
 class DataSaver
 {
 public:
+    // Supports RAII
     DataSaver(const std::string &binaryFilePath, std::chrono::milliseconds serializerDelay);
     ~DataSaver();
 
+    // Save number. This function is lockfree and thread-safe
     void QueueSave(int number);
 
 private:
     std::chrono::milliseconds serializerDelay;
+    const std::string serializationPath;
 
     std::thread dataWriter;
-    std::fstream serializeFile;
     boost::lockfree::queue<int> requestQueue;
     std::map<int, int> valueCount;
 
     std::condition_variable quitNotification;
     std::mutex quitMutex;
 
+    // Main save thread function
     void ProcessQueue();
+
+    // Move all numbers from queue to map
+    void MigrateToBinaryTree();
+
+    // Serialize map
+    void SerializeBinaryTree();
 
     // disallowed
     DataSaver() = delete;

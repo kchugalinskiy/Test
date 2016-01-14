@@ -1,5 +1,7 @@
 #include "DataSaver.hpp"
 
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/serialization/map.hpp>
 #include "Logger/Logger.hpp"
 
 namespace Server
@@ -7,8 +9,18 @@ namespace Server
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 DataSaver::DataSaver(const std::string &binaryFilePath, std::chrono::milliseconds delay)
     : serializerDelay(delay)
+    , serializationPath(binaryFilePath)
 {
-    dataWriter = std::thread(&DataSaver::ProcessQueue, this);
+    std::ofstream serializeFile(serializationPath);
+    if (serializeFile.is_open())
+    {
+        serializeFile.close();
+        dataWriter = std::thread(&DataSaver::ProcessQueue, this);
+    }
+    else
+    {
+        LOG_ERROR(std::string("Failed to open file path = ") + serializationPath);
+    }
 }
 
 DataSaver::~DataSaver()
@@ -40,10 +52,40 @@ void DataSaver::ProcessQueue()
         else
         {
             LOG_INFO("Started processing the queue");
+            MigrateToBinaryTree();
             LOG_INFO("Finished processing the queue");
             LOG_INFO("Started serialization");
+            SerializeBinaryTree();
             LOG_INFO("Finished serialization");
         }
+    }
+}
+
+void DataSaver::MigrateToBinaryTree()
+{
+    int number;
+    while (requestQueue.pop(number))
+    {
+        if (valueCount.end() == valueCount.find(number))
+        {
+            valueCount[number] = 0;
+        }
+        ++valueCount[number];
+    }
+}
+
+void DataSaver::SerializeBinaryTree()
+{
+    std::ofstream serializeFile(serializationPath);
+    if (serializeFile.is_open())
+    {
+        LOG_INFO(std::string("Serializing to path ") + serializationPath);
+        boost::archive::text_oarchive output(serializeFile);
+        output << valueCount;
+    }
+    else
+    {
+        LOG_ERROR(std::string("Failed to open file path = ") + serializationPath);
     }
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -6,11 +6,11 @@
 namespace Server
 {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-Server::Server( short port )
+Server::Server(short port, const std::string &binaryFilePath, std::chrono::milliseconds serializerDelay)
     : ioService()
     , acceptor(ioService, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port) )
     , incomingConnectionSocket(ioService)
+    , requestProcessor(binaryFilePath, serializerDelay)
 {
     LOG_INFO("Server started");
     LOG_INFO("Waiting for incoming connection(s)");
