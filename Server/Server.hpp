@@ -11,11 +11,16 @@ namespace Server
 class Server
 {
 public:
-    Server( short port );
+    explicit Server( short port );
     void Run();
     ~Server();
 
 private:
+    Server() = delete;
+    Server(const Server&) = delete;
+    Server(Server&&) = delete;
+    void operator=(const Server&) = delete;
+
     void AcceptIncoming();
 
     boost::asio::io_service ioService;

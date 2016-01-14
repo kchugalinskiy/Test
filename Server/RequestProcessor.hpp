@@ -20,9 +20,9 @@ private:
     double CalculateSquareAvg() const;
 
     // Disallowed
-    RequestProcessor(RequestProcessor&&);
-    RequestProcessor(const RequestProcessor&);
-    void operator=(const RequestProcessor&);
+    RequestProcessor(RequestProcessor&&) = delete;
+    RequestProcessor(const RequestProcessor&) = delete;
+    void operator=(const RequestProcessor&) = delete;
 
     std::mutex requestProcessorMutex;
     uint64_t partialSqrSum;

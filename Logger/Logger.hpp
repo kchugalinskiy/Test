@@ -39,10 +39,10 @@ private:
     std::unique_ptr<ILogger> loggerInstance;
 
     // Disallowed
-    LoggerConfig();
-    LoggerConfig(const LoggerConfig&);
-    LoggerConfig(LoggerConfig&&);
-    void operator=(const LoggerConfig&);
+    LoggerConfig() = delete;
+    LoggerConfig(const LoggerConfig&) = delete;
+    LoggerConfig(LoggerConfig&&) = delete;
+    void operator=(const LoggerConfig&) = delete;
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 } // namespace Logger

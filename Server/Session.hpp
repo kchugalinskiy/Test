@@ -10,11 +10,16 @@ class RequestProcessor;
 class Session : public std::enable_shared_from_this<Session>
 {
 public:
-    Session(boost::asio::ip::tcp::socket socket);
+    explicit Session(boost::asio::ip::tcp::socket socket);
 
     void Start( RequestProcessor *processor );
 
 private:
+    Session() = delete;
+    Session(const Session&) = delete;
+    Session(Session&&) = delete;
+    void operator=(const Session&) = delete;
+
     void ReadNextNumber();
     void WriteResponse();
 

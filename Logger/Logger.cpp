@@ -31,9 +31,10 @@ private:
     std::ofstream logFile;
 
     // Disallowed ctors
-    FileLogger();
-    FileLogger(const FileLogger&);
-    FileLogger(FileLogger&&);
+    FileLogger() = delete;
+    FileLogger(const FileLogger&) = delete;
+    FileLogger(FileLogger&&) = delete;
+    void operator=(const FileLogger&) = delete;
 };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -16,10 +16,10 @@ public:
 
 private:
     // Disallowed
-    Client();
-    Client(const Client&);
-    Client(Client&&);
-    void operator=(const Client&);
+    Client() = delete;
+    Client(const Client&) = delete;
+    Client(Client&&) = delete;
+    void operator=(const Client&) = delete;
 
     void SendNumber( int request );
     double ReceiveSum();
